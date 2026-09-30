@@ -1,0 +1,953 @@
+/* ==========================================================================
+   WebImpulse - Hoja de Estilos Oficial (styles.css)
+   Proyecto: Mi Primera Landing Page Profesional con IA - FASE 3
+   Paleta: Lienzo #FAFAF9 | Pizarra #0F172A | Acento #2563EB | Confianza #059669
+   Tipografías: Plus Jakarta Sans (Display) & DM Sans (Cuerpo)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. VARIABLES CSS (CUSTOM PROPERTIES)
+   -------------------------------------------------------------------------- */
+:root {
+  /* Paleta cromática del brief creativo */
+  --color-canvas: #FAFAF9;        /* 60% Lienzo neutro cálido */
+  --color-canvas-card: #FFFFFF;   /* Superficie para tarjetas de contenido */
+  --color-slate-900: #0F172A;     /* 30% Titulares y estructura formal */
+  --color-slate-700: #334155;     /* Textos destacados y subtítulos */
+  --color-slate-600: #475569;     /* Cuerpo de texto general */
+  --color-slate-500: #64748B;     /* Metadatos y notas secundarias */
+  --color-slate-400: #94A3B8;     /* Textos tenues e iconos */
+  --color-slate-200: #E2E8F0;     /* Bordes y separadores sutiles (hairline) */
+  --color-slate-100: #F1F5F9;     /* Fondos de cajas secundarias */
+  --color-slate-50:  #F8FAFC;     /* Superficie ultra suave */
+
+  --color-pulse: #2563EB;         /* 10% Acento primario de conversión */
+  --color-pulse-hover: #1D4ED8;   /* Hover en botones principales */
+  --color-pulse-light: #EFF6FF;   /* Fondos suaves de acento */
+  --color-pulse-ring: rgba(37, 99, 235, 0.25); /* Anillo de foco accesible */
+
+  --color-sage: #047857;          /* 3% Acento de confianza y éxito */
+  --color-sage-light: #ECFDF5;    /* Fondo de distintivos de confianza */
+  --color-sage-border: #A7F3D0;   /* Borde suave de validación */
+
+  --color-rose: #E11D48;          /* Color para errores y campos requeridos */
+  --color-rose-light: #FFF1F2;    /* Fondo suave de error */
+
+  /* Tipografías oficiales */
+  --font-heading: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Escala de espaciados */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-24: 6rem;     /* 96px */
+
+  /* Radios de borde */
+  --radius-sm: 0.375rem;  /* 6px */
+  --radius-md: 0.5rem;    /* 8px */
+  --radius-lg: 0.75rem;   /* 12px */
+  --radius-xl: 1rem;      /* 16px */
+  --radius-2xl: 1.25rem;  /* 20px */
+  --radius-full: 9999px;
+
+  /* Sombras controladas (estética de elevación sutil) */
+  --shadow-subtle: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
+  --shadow-card: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.03);
+  --shadow-hover: 0 10px 15px -3px rgba(15, 23, 42, 0.07), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+  --shadow-modal: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.05);
+
+  /* Transiciones estándar (máx 200ms para feedback ágil) */
+  --transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --------------------------------------------------------------------------
+   2. CONFIGURACIÓN GENERAL Y RESET
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  min-width: 320px;
+}
+
+body {
+  background-color: var(--color-canvas);
+  color: var(--color-slate-900);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Selección accesible de texto */
+::selection {
+  background-color: rgba(37, 99, 235, 0.15);
+  color: var(--color-slate-900);
+}
+
+img, svg, video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* --------------------------------------------------------------------------
+   3. TIPOGRAFÍA Y JERARQUÍA VISUAL
+   -------------------------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6,
+.font-heading {
+  font-family: var(--font-heading);
+  color: var(--color-slate-900);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: clamp(1.875rem, 4vw + 0.5rem, 3rem);
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem);
+  line-height: 1.25;
+}
+
+h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+p {
+  color: var(--color-slate-600);
+  max-width: 70ch;
+}
+
+/* Cifras tabulares para alineación perfecta */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------------------------------
+   4. ESTRUCTURA Y CONTENEDORES
+   -------------------------------------------------------------------------- */
+main {
+  display: block;
+  width: 100%;
+}
+
+/* Delimitación del ancho de lectura y márgenes seguros */
+.max-w-7xl {
+  max-width: 80rem; /* 1280px */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.max-w-4xl {
+  max-width: 56rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.max-w-3xl {
+  max-width: 48rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.max-w-2xl {
+  max-width: 42rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* --------------------------------------------------------------------------
+   5. HEADER Y NAVEGACIÓN
+   -------------------------------------------------------------------------- */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background-color: rgba(250, 250, 249, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--color-slate-200);
+  transition: background-color var(--transition-fast);
+}
+
+/* Enlaces de navegación con indicador de hover refinado */
+header nav a {
+  position: relative;
+  font-weight: 500;
+  color: var(--color-slate-600);
+  transition: color var(--transition-fast);
+  padding: var(--space-1) 0;
+}
+
+header nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: var(--color-pulse);
+  transition: width var(--transition-fast);
+  border-radius: var(--radius-full);
+}
+
+header nav a:hover {
+  color: var(--color-slate-900);
+}
+
+header nav a:hover::after {
+  width: 100%;
+}
+
+/* Menú móvil desplegable con details/summary accesible */
+details.group summary {
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+details.group summary::-webkit-details-marker {
+  display: none;
+}
+
+details.group summary:hover {
+  background-color: var(--color-slate-100);
+  color: var(--color-slate-900);
+}
+
+details[open].group summary {
+  background-color: var(--color-slate-100);
+  color: var(--color-slate-900);
+}
+
+/* Panel flotante del menú móvil */
+details.group > div {
+  animation: menuFadeIn var(--transition-fast) forwards;
+  transform-origin: top right;
+}
+
+@keyframes menuFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   6. SECCIÓN HERO (ITERACIÓN 1: REFINAMIENTO VISUAL & EQUILIBRIO JERÁRQUICO)
+   -------------------------------------------------------------------------- */
+section {
+  position: relative;
+  width: 100%;
+}
+
+/* Contenedor del Hero: Espaciado vertical armónico con degradado ambiental sutil */
+main > section:first-of-type {
+  padding-top: clamp(2.25rem, 5vw, 4.25rem);
+  padding-bottom: clamp(2.75rem, 6vw, 5.25rem);
+  background: radial-gradient(circle at 15% 25%, rgba(37, 99, 235, 0.025) 0%, transparent 50%),
+              var(--color-canvas);
+  border-bottom: 1px solid var(--color-slate-200);
+}
+
+/* Kicker / Eyebrow: sobrio, rítmico y orientador */
+main > section:first-of-type .uppercase {
+  letter-spacing: 0.075em;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-pulse);
+  margin-bottom: var(--space-2);
+}
+
+/* 1. TÍTULO PRINCIPAL (H1): Máxima jerarquía y solidez tipográfica */
+main > section:first-of-type h1 {
+  font-size: clamp(1.875rem, 4vw + 0.5rem, 3.25rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+  color: var(--color-slate-900);
+  margin-bottom: 1.25rem;
+  text-wrap: balance;
+}
+
+/* Resalte sutil y elegante de la palabra clave "moderna" */
+main > section:first-of-type h1 span {
+  color: var(--color-pulse);
+  position: relative;
+  display: inline-block;
+  text-decoration: underline;
+  text-decoration-color: rgba(37, 99, 235, 0.28);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 4px;
+}
+
+/* 2. SUBTÍTULO: Lectura cómoda, longitud óptima y contraste suave */
+main > section:first-of-type p {
+  font-size: clamp(0.9375rem, 1.1vw + 0.15rem, 1.125rem);
+  line-height: 1.65;
+  color: var(--color-slate-700);
+  max-width: 48ch;
+  margin-bottom: 1.75rem;
+  font-weight: 400;
+}
+
+/* 3. GRUPO DE BOTONES CTA: Contraste jerárquico claro entre acción principal y secundaria */
+main > section:first-of-type .flex-col,
+main > section:first-of-type .sm\:flex-row {
+  gap: 0.875rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Botón Primario ("Cotizar mi web"): Foco visual magnético y dominante */
+main > section:first-of-type a[href="#cotizar"] {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  padding: 0.875rem 1.875rem;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-pulse);
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px -1px rgba(37, 99, 235, 0.38), 0 2px 4px -1px rgba(15, 23, 42, 0.06);
+  transition: background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+main > section:first-of-type a[href="#cotizar"]:hover {
+  background-color: var(--color-pulse-hover);
+  box-shadow: 0 8px 22px -2px rgba(37, 99, 235, 0.44), 0 3px 6px -1px rgba(15, 23, 42, 0.1);
+  transform: translateY(-2px);
+}
+
+main > section:first-of-type a[href="#cotizar"]:active {
+  transform: translateY(0);
+}
+
+/* Botón Secundario ("Conocer el proceso"): Deliberadamente subordinado para no competir */
+main > section:first-of-type a[href="#como-funciona"] {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  padding: 0.875rem 1.5rem;
+  border-radius: var(--radius-lg);
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-slate-200);
+  color: var(--color-slate-700);
+  box-shadow: var(--shadow-subtle);
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+main > section:first-of-type a[href="#como-funciona"]:hover {
+  background-color: var(--color-slate-50);
+  border-color: #CBD5E1;
+  color: var(--color-slate-900);
+  transform: translateY(-1px);
+}
+
+main > section:first-of-type a[href="#como-funciona"]:active {
+  transform: translateY(0);
+}
+
+/* Micro-afirmaciones de confianza: silenciosas y estructuradas */
+main > section:first-of-type .border-t {
+  border-top-color: var(--color-slate-200);
+  padding-top: var(--space-4);
+  gap: 0.75rem 1.75rem;
+}
+
+main > section:first-of-type .border-t span {
+  font-size: 0.8125rem;
+  color: var(--color-slate-600);
+}
+
+/* 4. IMAGEN / MOCKUP DEL HERO: Elemento de apoyo secundario contenido y equilibrado */
+main > section:first-of-type .lg\:col-span-5 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Tarjeta del Mockup: Ancho máximo acotado (390px) y sombra ambiental suave sin estridencias */
+main > section:first-of-type .lg\:col-span-5 > div {
+  width: 100%;
+  max-width: 390px;
+  background-color: #FFFFFF;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: var(--radius-xl);
+  padding: 0.5rem;
+  box-shadow: 0 12px 28px -8px rgba(15, 23, 42, 0.06), 0 4px 10px -2px rgba(15, 23, 42, 0.03);
+  transition: transform var(--transition-smooth), box-shadow var(--transition-smooth);
+}
+
+main > section:first-of-type .lg\:col-span-5 > div:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px -8px rgba(15, 23, 42, 0.08), 0 6px 12px -2px rgba(15, 23, 42, 0.04);
+}
+
+/* Barra del navegador simulado: discreta y limpia */
+main > section:first-of-type .lg\:col-span-5 .bg-slate-100 {
+  background-color: #F8FAFC;
+  border-bottom: 1px solid var(--color-slate-200);
+  padding: 0.35rem 0.65rem;
+  border-top-left-radius: calc(var(--radius-xl) - 4px);
+  border-top-right-radius: calc(var(--radius-xl) - 4px);
+}
+
+/* Imagen del mockup: ligera calibración de saturación para que no compita ópticamente con el texto */
+main > section:first-of-type .lg\:col-span-5 img {
+  border-radius: var(--radius-md);
+  filter: contrast(0.98) saturate(0.95);
+  transition: filter var(--transition-smooth);
+}
+
+main > section:first-of-type .lg\:col-span-5 > div:hover img {
+  filter: none;
+}
+
+/* Pie del mockup: discreto y sobrio */
+main > section:first-of-type .lg\:col-span-5 .bg-brand-slate {
+  background-color: var(--color-slate-900);
+  padding: 0.5rem 0.75rem;
+  border-bottom-left-radius: calc(var(--radius-xl) - 4px);
+  border-bottom-right-radius: calc(var(--radius-xl) - 4px);
+}
+
+/* --------------------------------------------------------------------------
+   7. SECCIÓN BENEFICIOS (ITERACIÓN 2: PROFUNDIDAD & MICROINTERACCIÓN DEFINIDA)
+   -------------------------------------------------------------------------- */
+#beneficios article {
+  background-color: var(--color-canvas);
+  border: 1px solid var(--color-slate-200);
+  border-radius: var(--radius-2xl);
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.03), 0 1px 2px -1px rgba(15, 23, 42, 0.02);
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 220ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 200ms ease,
+              background-color 200ms ease;
+}
+
+/* Icono ilustrativo de cada beneficio con microinteracción contenida */
+#beneficios article div[aria-hidden="true"]:first-of-type {
+  border: 1px solid rgba(226, 232, 240, 0.6);
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 220ms ease;
+}
+
+/* Título de cada beneficio */
+#beneficios article h3 {
+  font-family: var(--font-heading);
+  color: var(--color-slate-900);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  transition: color 180ms ease;
+}
+
+/* Hover en Beneficios: Sensación de elevación clara y mayor definición */
+#beneficios article:hover {
+  transform: translateY(-4px);
+  background-color: var(--color-canvas-card);
+  border-color: #CBD5E1;
+  box-shadow: 0 12px 24px -4px rgba(15, 23, 42, 0.08), 0 4px 8px -2px rgba(15, 23, 42, 0.03);
+}
+
+#beneficios article:hover div[aria-hidden="true"]:first-of-type {
+  transform: scale(1.06) translateY(-1px);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.06);
+}
+
+/* --------------------------------------------------------------------------
+   8. SECCIÓN TESTIMONIOS (ITERACIÓN 2: PROFUNDIDAD SOBRIA & CREDIBILIDAD)
+   -------------------------------------------------------------------------- */
+#testimonios blockquote {
+  background-color: var(--color-canvas-card);
+  border: 1px solid var(--color-slate-200);
+  border-radius: var(--radius-2xl);
+  padding: 1.75rem 2rem;
+  box-shadow: 0 2px 4px -1px rgba(15, 23, 42, 0.04), 0 1px 2px 0 rgba(15, 23, 42, 0.02);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 220ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 200ms ease;
+}
+
+/* Avatar del autor del testimonio */
+#testimonios blockquote footer > div:first-of-type {
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Cita tipográfica en cursiva serena */
+#testimonios blockquote p {
+  font-style: italic;
+  color: var(--color-slate-700);
+  line-height: 1.68;
+}
+
+/* Hover en Testimonios: Elevación sobria y respetuosa con el contenido */
+#testimonios blockquote:hover {
+  transform: translateY(-2px);
+  border-color: #CBD5E1;
+  box-shadow: 0 10px 20px -4px rgba(15, 23, 42, 0.07), 0 4px 6px -2px rgba(15, 23, 42, 0.03);
+}
+
+#testimonios blockquote:hover footer > div:first-of-type {
+  transform: scale(1.05);
+}
+
+/* --------------------------------------------------------------------------
+   9. SECCIÓN "¿CÓMO FUNCIONA?" (PROCESO EN 4 PASOS)
+   -------------------------------------------------------------------------- */
+#como-funciona .grid > div {
+  background-color: var(--color-canvas);
+  border: 1px solid var(--color-slate-200);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform var(--transition-smooth), background-color var(--transition-smooth), border-color var(--transition-smooth), box-shadow var(--transition-smooth);
+}
+
+#como-funciona .grid > div:hover {
+  transform: translateY(-3px);
+  background-color: var(--color-canvas-card);
+  border-color: #CBD5E1;
+  box-shadow: var(--shadow-card);
+}
+
+/* Numerales estilizados en cada paso */
+#como-funciona .grid > div span:first-child {
+  font-feature-settings: 'tnum';
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+/* --------------------------------------------------------------------------
+   10. SECCIÓN FORMULARIO DE CAPTURA
+   -------------------------------------------------------------------------- */
+#cotizar form {
+  width: 100%;
+}
+
+/* Etiquetas accesibles */
+#cotizar label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-slate-900);
+  margin-bottom: var(--space-1);
+}
+
+/* Entradas de texto y lista desplegable */
+#cotizar input[type="text"],
+#cotizar input[type="email"],
+#cotizar select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 0.9375rem;
+  color: var(--color-slate-900);
+  background-color: var(--color-canvas-card);
+  border: 1px solid var(--color-slate-200);
+  border-radius: var(--radius-md);
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+#cotizar input[type="text"]::placeholder,
+#cotizar input[type="email"]::placeholder {
+  color: var(--color-slate-400);
+}
+
+/* Estados de foco destacados y accesibles (WCAG AA) */
+#cotizar input[type="text"]:focus,
+#cotizar input[type="email"]:focus,
+#cotizar select:focus {
+  border-color: var(--color-pulse);
+  box-shadow: 0 0 0 3px var(--color-pulse-ring);
+}
+
+/* Estilo select nativo mejorado */
+#cotizar select {
+  cursor: pointer;
+}
+
+/* Checkbox semántico */
+#cotizar input[type="checkbox"] {
+  width: 1.125rem;
+  height: 1.125rem;
+  accent-color: var(--color-pulse);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  margin-top: 0.2rem;
+}
+
+/* Contenedores de mensajes de error preparados para JavaScript */
+.error-msg,
+#nombre-error,
+#correo-error,
+#negocio-error,
+#mensaje-error,
+#consentimiento-error {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-rose);
+  margin-top: var(--space-1);
+  display: block;
+}
+
+/* Indicación visual para campos inválidos */
+#cotizar [aria-invalid="true"] {
+  border-color: var(--color-rose);
+}
+
+#cotizar [aria-invalid="true"]:focus {
+  border-color: var(--color-rose);
+  box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.2);
+}
+
+/* Ocultar inicialmente si no hay error activo */
+.hidden {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   11. FOOTER MINIMALISTA
+   -------------------------------------------------------------------------- */
+footer {
+  background-color: var(--color-canvas-card);
+  border-top: 1px solid var(--color-slate-200);
+  padding: var(--space-12) 0;
+  color: var(--color-slate-600);
+  font-size: 0.8125rem;
+}
+
+footer a {
+  transition: color var(--transition-fast);
+}
+
+footer a:hover {
+  color: var(--color-slate-900);
+}
+
+/* --------------------------------------------------------------------------
+   12. MICROINTERACCIONES Y BOTONES
+   -------------------------------------------------------------------------- */
+/* Botón de acción principal (CTA Primario) */
+a[href="#cotizar"],
+button[type="submit"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  background-color: var(--color-pulse);
+  color: #FFFFFF !important;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: var(--shadow-subtle);
+  transition: background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+a[href="#cotizar"]:hover,
+button[type="submit"]:hover {
+  background-color: var(--color-pulse-hover);
+  box-shadow: var(--shadow-card);
+  transform: translateY(-1px);
+}
+
+a[href="#cotizar"]:active,
+button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+/* Botón secundario outline */
+a[href="#como-funciona"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 500;
+  background-color: var(--color-canvas-card);
+  color: var(--color-slate-700);
+  border: 1px solid var(--color-slate-200);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+}
+
+a[href="#como-funciona"]:hover {
+  background-color: var(--color-slate-50);
+  border-color: var(--color-slate-400);
+  color: var(--color-slate-900);
+}
+
+/* --------------------------------------------------------------------------
+   13. ACCESIBILIDAD Y FOCO VISIBLE
+   -------------------------------------------------------------------------- */
+/* Anillo de enfoque de alto contraste para navegación por teclado (Tab) */
+:focus-visible {
+  outline: 2px solid var(--color-pulse);
+  outline-offset: 2px;
+}
+
+/* Ocultar de vista pero disponible para lectores de pantalla */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* --------------------------------------------------------------------------
+   14. MEDIA QUERIES RESPONSIVE (320px, 768px, 1280px)
+   -------------------------------------------------------------------------- */
+
+/* -----------------------------------------
+   RESOLUCIÓN 1: Móvil Pequeño (min-width: 320px)
+   ----------------------------------------- */
+@media screen and (min-width: 320px) {
+  /* Prevenir desbordamiento horizontal garantizado */
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  /* Padding horizontal seguro para smartphones */
+  .px-4,
+  header > div,
+  main section > div,
+  footer > div {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Altura mínima de toques táctiles (>=44px para dedos) */
+  a[href="#cotizar"],
+  a[href="#como-funciona"],
+  button[type="submit"],
+  #cotizar input[type="text"],
+  #cotizar input[type="email"],
+  #cotizar select {
+    min-height: 44px;
+  }
+
+  /* Botones del Hero apilados en móvil */
+  .lg\:col-span-7 .flex-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .lg\:col-span-7 a {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Mockup en móviles: centrado, contenido a máx 310px para evitar overflow lateral */
+  main > section:first-of-type .lg\:col-span-5 > div {
+    max-width: 310px;
+    margin-inline: auto;
+  }
+
+  /* Tarjetas en una sola columna */
+  #beneficios .grid,
+  #testimonios .grid,
+  #como-funciona .grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  /* Margen interno del formulario cómodo para pantallas compactas */
+  #cotizar .p-6 {
+    padding: 1.25rem; 
+  }
+}
+
+/* -----------------------------------------
+   RESOLUCIÓN 2: Tablet (min-width: 768px)
+   ----------------------------------------- */
+@media screen and (min-width: 768px) {
+  header > div,
+  main section > div,
+  footer > div {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  /* Navegación horizontal completa visible */
+  header nav {
+    display: flex !important;
+  }
+
+  /* Ocultar menú hamburguesa en tablets y desktop */
+  details.group {
+    display: none !important;
+  }
+
+  /* Botones del Hero alineados horizontalmente */
+  .lg\:col-span-7 .flex-col {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .lg\:col-span-7 a {
+    width: auto;
+  }
+
+  /* Mockup en tablets: equilibrado a 380px sin competir con el bloque de texto */
+  main > section:first-of-type .lg\:col-span-5 > div {
+    max-width: 380px;
+    margin-inline: auto;
+  }
+
+  /* Cuadrícula de 2 columnas en tablet */
+  #beneficios .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Quinto beneficio ocupa ambas columnas para balance visual */
+  #beneficios article:nth-child(5) {
+    grid-column: span 2;
+  }
+
+  #testimonios .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  #como-funciona .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  #cotizar .p-6 {
+    padding: 2.5rem;
+  }
+
+  footer > div {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
+}
+
+/* -----------------------------------------
+   RESOLUCIÓN 3: Desktop (min-width: 1280px)
+   ----------------------------------------- */
+@media screen and (min-width: 1280px) {
+  header > div,
+  main section > div,
+  footer > div {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  /* Distribución de 3 columnas para beneficios */
+  #beneficios .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  #beneficios article:nth-child(5) {
+    grid-column: span 2;
+  }
+
+  /* Distribución de 4 columnas horizontales para el proceso paso a paso */
+  #como-funciona .grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+
+  /* Distribución asimétrica del Hero: 55% Copywriting + 45% Vitrina Visual */
+  .lg\:col-span-7 {
+    grid-column: span 7;
+  }
+
+  .lg\:col-span-5 {
+    grid-column: span 5;
+  }
+
+  /* Mockup en desktop: contenido a 390px para mantener protagonismo en el bloque textual */
+  main > section:first-of-type .lg\:col-span-5 > div {
+    max-width: 390px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   15. SOPORTE PARA PREFERS-REDUCED-MOTION
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  #beneficios article:hover,
+  #beneficios article:hover div[aria-hidden="true"],
+  #testimonios blockquote:hover,
+  #testimonios blockquote:hover footer > div,
+  #como-funciona .grid > div:hover,
+  a[href="#cotizar"]:hover,
+  button[type="submit"]:hover,
+  .hero-mockup-wrapper:hover {
+    transform: none !important;
+  }
+}

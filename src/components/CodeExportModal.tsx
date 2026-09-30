@@ -1,0 +1,709 @@
+import React, { useState } from 'react';
+import { X, Copy, Check, Code } from 'lucide-react';
+
+interface CodeExportModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export const CodeExportModal: React.FC<CodeExportModalProps> = ({ isOpen, onClose }) => {
+  const [copied, setCopied] = useState(false);
+
+  if (!isOpen) return null;
+
+  const htmlBoilerplate = `<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebImpulse - Desarrollo Web Profesional para Emprendedores</title>
+  <meta name="description" content="Desarrollo de páginas web profesionales, modernas y fáciles de usar para pequeños emprendimientos y artesanos. Diseñado para Laura Martínez.">
+
+  <!-- Tipografías de Google Fonts: Plus Jakarta Sans (Display) y DM Sans (Cuerpo) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Plus+Jakarta+Sans:ital,wght@0,500..800;1,500..800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              canvas: '#FAFAF9',   /* 60% Neutro Dominante Lienzo */
+              slate: '#0F172A',    /* 30% Estructural / Titulares */
+              pulse: '#2563EB',    /* 10% Acento Primario Conversión */
+              sage: '#059669',     /* 3% Acento Confianza y Calma */
+              border: '#E2E8F0'    /* Líneas divisorias sutiles */
+            }
+          },
+          fontFamily: {
+            heading: ['"Plus Jakarta Sans"', 'sans-serif'],
+            body: ['"DM Sans"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-brand-canvas text-brand-slate font-body antialiased selection:bg-brand-pulse/15 selection:text-brand-slate">
+
+  <!-- ======================================================== -->
+  <!-- 1. HEADER (CONTRATO DE 3 ZONAS & NAVEGACIÓN ACCESIBLE)   -->
+  <!-- ======================================================== -->
+  <header class="border-b border-brand-border bg-brand-canvas/90 backdrop-blur-md sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Zona 1: Logotipo / Wordmark Único -->
+      <a href="#" class="font-heading font-extrabold text-xl text-brand-slate tracking-tight flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-brand-pulse rounded-md" aria-label="WebImpulse Inicio">
+        <span class="w-2.5 h-2.5 rounded-full bg-brand-pulse" aria-hidden="true"></span>
+        <span>Web<span class="text-brand-pulse">Impulse</span></span>
+      </a>
+
+      <!-- Zona 2: Enlaces Limpios de Navegación (Desktop) -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600" aria-label="Navegación principal en escritorio">
+        <a href="#beneficios" class="hover:text-brand-slate transition-colors focus:outline-none focus:ring-2 focus:ring-brand-pulse rounded-md">Beneficios</a>
+        <a href="#testimonios" class="hover:text-brand-slate transition-colors focus:outline-none focus:ring-2 focus:ring-brand-pulse rounded-md">Testimonios</a>
+        <a href="#como-funciona" class="hover:text-brand-slate transition-colors focus:outline-none focus:ring-2 focus:ring-brand-pulse rounded-md">¿Cómo funciona?</a>
+        <a href="#cotizar" class="hover:text-brand-slate transition-colors focus:outline-none focus:ring-2 focus:ring-brand-pulse rounded-md">Cotizar</a>
+      </nav>
+
+      <!-- Zona 3: Acción Primaria (Desktop) y Menú Desplegable Accesible (Móvil) -->
+      <div class="flex items-center gap-3">
+        <a href="#cotizar" class="hidden sm:inline-flex items-center px-4 py-2 text-xs sm:text-sm font-semibold text-white bg-brand-pulse hover:bg-blue-700 rounded-lg shadow-sm transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-brand-pulse/30">
+          Cotizar mi web
+        </a>
+
+        <!-- Menú Móvil Desplegable Accesible (Semántico con details/summary, operable por teclado sin JavaScript) -->
+        <details class="md:hidden relative group">
+          <summary class="p-2 rounded-lg text-slate-700 hover:text-brand-slate hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-pulse list-none cursor-pointer flex items-center justify-center" aria-label="Abrir menú de navegación">
+            <!-- Icono Hamburguesa cuando está cerrado -->
+            <svg class="w-6 h-6 block group-open:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <!-- Icono Cerrar cuando está abierto -->
+            <svg class="w-6 h-6 hidden group-open:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </summary>
+
+          <!-- Menú Flotante con Enlaces Accesibles -->
+          <div class="absolute right-0 top-full mt-2 w-56 bg-white rounded-xl shadow-lg border border-brand-border p-2 space-y-1 z-50">
+            <a href="#beneficios" class="block px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-brand-slate transition-colors focus:outline-none focus:bg-slate-100">
+              Beneficios
+            </a>
+            <a href="#testimonios" class="block px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-brand-slate transition-colors focus:outline-none focus:bg-slate-100">
+              Testimonios
+            </a>
+            <a href="#como-funciona" class="block px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-brand-slate transition-colors focus:outline-none focus:bg-slate-100">
+              ¿Cómo funciona?
+            </a>
+            <div class="pt-2 border-t border-slate-100 mt-1">
+              <a href="#cotizar" class="block px-3 py-2 text-center text-xs font-semibold text-white bg-brand-pulse hover:bg-blue-700 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-brand-pulse">
+                Cotizar mi web
+              </a>
+            </div>
+          </div>
+        </details>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ======================================================== -->
+  <!-- CONTENIDO PRINCIPAL: ELEMENTO SEMÁNTICO <MAIN>           -->
+  <!-- ======================================================== -->
+  <main>
+
+    <!-- ======================================================== -->
+    <!-- 2. HERO SECTION                                          -->
+    <!-- ======================================================== -->
+    <section class="py-12 md:py-20 border-b border-brand-border bg-brand-canvas overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+          
+          <!-- Columna de Texto Persuasivo (55%) -->
+          <div class="lg:col-span-7 space-y-6">
+            <div class="flex items-center gap-2 text-xs font-semibold text-brand-pulse uppercase tracking-wider">
+              <span>Desarrollo Web para Pequeños Negocios</span>
+              <span aria-hidden="true">·</span>
+              <span class="text-slate-500 font-normal">Sin enredos técnicos</span>
+            </div>
+
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-heading text-brand-slate tracking-tight leading-tight">
+              Tu talento merece una vitrina digital propia: <span class="text-brand-pulse">moderna</span> y a tu medida.
+            </h1>
+
+            <p class="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl">
+              Deja de perder ventas respondiendo precios repetidamente por mensaje en redes sociales. Diseñamos tu página web profesional y fácil de usar para que muestres tus productos artesanales con orden, claridad y confianza.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-2">
+              <a href="#cotizar" class="px-6 py-3.5 text-sm sm:text-base font-semibold text-white bg-brand-pulse hover:bg-blue-700 rounded-lg text-center shadow-sm hover:shadow transition-all focus:outline-none focus:ring-2 focus:ring-brand-pulse/30">
+                Cotizar mi web
+              </a>
+              <a href="#como-funciona" class="px-5 py-3.5 text-sm sm:text-base font-medium text-slate-700 bg-white border border-brand-border hover:bg-slate-50 rounded-lg text-center transition-colors focus:outline-none focus:ring-2 focus:ring-slate-300">
+                Conocer el proceso
+              </a>
+            </div>
+
+            <!-- Micro-afirmaciones Responsables -->
+            <div class="pt-4 border-t border-brand-border flex flex-wrap items-center gap-y-2 gap-x-6 text-xs text-slate-600">
+              <span class="flex items-center gap-1.5 font-medium text-slate-700">
+                <span class="text-brand-sage font-bold" aria-hidden="true">✓</span>
+                Presupuesto claro desde el inicio
+              </span>
+              <span class="flex items-center gap-1.5 font-medium text-slate-700">
+                <span class="text-brand-sage font-bold" aria-hidden="true">✓</span>
+                Sin necesidad de programar
+              </span>
+              <span class="flex items-center gap-1.5 font-medium text-slate-700">
+                <span class="text-brand-sage font-bold" aria-hidden="true">✓</span>
+                Acompañamiento cercano durante el proceso
+              </span>
+            </div>
+          </div>
+
+          <!-- Columna Vitrina Visual (45%) -->
+          <div class="lg:col-span-5 relative">
+            <div class="bg-white rounded-2xl border border-brand-border p-3 shadow-xl transform hover:-translate-y-1 transition-transform duration-300">
+              <div class="bg-slate-100 px-3 py-2 border-b border-slate-200 rounded-t-xl flex items-center justify-between mb-2">
+                <div class="flex items-center gap-1.5" aria-hidden="true">
+                  <span class="w-2.5 h-2.5 rounded-full bg-slate-300"></span>
+                  <span class="w-2.5 h-2.5 rounded-full bg-slate-300"></span>
+                  <span class="w-2.5 h-2.5 rounded-full bg-slate-300"></span>
+                </div>
+                <span class="text-[11px] font-mono text-slate-500 bg-white px-2.5 py-0.5 rounded border border-slate-200">
+                  tallerbarroyforma.com
+                </span>
+              </div>
+              
+              <!-- Imagen con ruta relativa adecuada al proyecto -->
+              <img 
+                src="src/assets/images/webimpulse_showcase_mockup_1790783393521.jpg" 
+                alt="Vista de ejemplo en laptop con catálogo de productos de cerámica artesanal sobre fondo neutro" 
+                class="rounded-xl w-full h-auto object-cover aspect-[4/3] bg-slate-100"
+              >
+
+              <div class="p-3 bg-brand-slate text-white rounded-b-xl mt-2 flex items-center justify-between text-xs">
+                <div>
+                  <span class="font-bold block">Taller Barro & Forma</span>
+                  <span class="text-[11px] text-slate-300">Ejemplo de catálogo artesanal</span>
+                </div>
+                <span class="text-emerald-400 font-mono text-[11px] font-semibold bg-emerald-950/70 px-2 py-0.5 rounded">
+                  Demo
+                </span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- 3. BENEFICIOS / FEATURES (ID="BENEFICIOS")                 -->
+    <!-- ======================================================== -->
+    <section id="beneficios" class="py-16 md:py-24 border-b border-brand-border bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        
+        <!-- Encabezado de Sección -->
+        <div class="text-center max-w-2xl mx-auto space-y-3">
+          <div class="text-xs font-semibold text-brand-pulse uppercase tracking-wider">
+            Ventajas para tu Negocio
+          </div>
+          <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold font-heading text-brand-slate tracking-tight">
+            Diseñado para fortalecer tu presencia digital
+          </h2>
+          <p class="text-sm sm:text-base text-slate-600">
+            Cinco pilares concretos pensados para que pequeños creadores y negocios locales muestren su trabajo con confianza.
+          </p>
+        </div>
+
+        <!-- Cuadrícula de 5 Beneficios -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          
+          <!-- Beneficio 1: Diseño profesional -->
+          <article class="bg-brand-canvas rounded-2xl p-6 sm:p-7 border border-brand-border hover:border-slate-300 transition-all space-y-4">
+            <div class="w-12 h-12 rounded-xl bg-blue-100 text-brand-pulse flex items-center justify-center font-bold text-xl" aria-hidden="true">
+              🎨
+            </div>
+            <div class="space-y-2">
+              <h3 class="text-lg font-bold font-heading text-brand-slate">Diseño profesional</h3>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                Páginas con una presentación cuidada, tipografía clara y estructura limpia que reflejan la dedicación de tu trabajo artesanal y generan credibilidad desde el primer vistazo.
+              </p>
+            </div>
+          </article>
+
+          <!-- Beneficio 2: Adaptación a dispositivos móviles -->
+          <article class="bg-brand-canvas rounded-2xl p-6 sm:p-7 border border-brand-border hover:border-slate-300 transition-all space-y-4">
+            <div class="w-12 h-12 rounded-xl bg-emerald-100 text-brand-sage flex items-center justify-center font-bold text-xl" aria-hidden="true">
+              📱
+            </div>
+            <div class="space-y-2">
+              <h3 class="text-lg font-bold font-heading text-brand-slate">Adaptación a dispositivos móviles</h3>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                Tu catálogo se adapta fluidamente a teléfonos y tablets, permitiendo que las personas que descubren tu marca en redes sociales puedan explorar tus productos con comodidad y rapidez.
+              </p>
+            </div>
+          </article>
+
+          <!-- Beneficio 3: Facilidad de uso -->
+          <article class="bg-brand-canvas rounded-2xl p-6 sm:p-7 border border-brand-border hover:border-slate-300 transition-all space-y-4">
+            <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-xl" aria-hidden="true">
+              ⚡
+            </div>
+            <div class="space-y-2">
+              <h3 class="text-lg font-bold font-heading text-brand-slate">Facilidad de uso</h3>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                Una navegación sencilla para que tus compradores encuentren fotos, detalles y formas de contacto de inmediato, sin procedimientos confusos ni pasos innecesarios.
+              </p>
+            </div>
+          </article>
+
+          <!-- Beneficio 4: Acompañamiento durante el proceso -->
+          <article class="bg-brand-canvas rounded-2xl p-6 sm:p-7 border border-brand-border hover:border-slate-300 transition-all space-y-4">
+            <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xl" aria-hidden="true">
+              🤝
+            </div>
+            <div class="space-y-2">
+              <h3 class="text-lg font-bold font-heading text-brand-slate">Acompañamiento durante el proceso</h3>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                Trabajamos en equipo contigo para comprender lo que necesitas, respondiendo tus dudas con cercanía y guiándote en la selección y orden de tus contenidos.
+              </p>
+            </div>
+          </article>
+
+          <!-- Beneficio 5: Publicación de la página web -->
+          <article class="bg-brand-canvas rounded-2xl p-6 sm:p-7 border border-brand-border hover:border-slate-300 transition-all space-y-4 md:col-span-2 lg:col-span-2">
+            <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-xl" aria-hidden="true">
+              🚀
+            </div>
+            <div class="space-y-2">
+              <h3 class="text-lg font-bold font-heading text-brand-slate">Publicación de la página web</h3>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                Nos encargamos de la vinculación técnica de tu dominio y la configuración necesaria para que tu sitio quede publicado en internet y listo para compartir con tus clientes.
+              </p>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- 4. TESTIMONIOS (ID="TESTIMONIOS")                         -->
+    <!-- ======================================================== -->
+    <section id="testimonios" class="py-16 md:py-24 border-b border-brand-border bg-brand-canvas">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        
+        <!-- Encabezado de Sección con Aclaración Académica -->
+        <div class="text-center max-w-2xl mx-auto space-y-3">
+          <div class="text-xs font-semibold text-brand-pulse uppercase tracking-wider">
+            Casos Demostrativos
+          </div>
+          <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold font-heading text-brand-slate tracking-tight">
+            Experiencias demostrativas de emprendedores
+          </h2>
+          <p class="text-sm sm:text-base text-slate-600">
+            Ejemplos de cómo una página web organizada puede apoyar las actividades cotidianas de un negocio artesanal.
+          </p>
+          <div>
+            <span class="inline-block text-[11px] font-medium text-slate-500 bg-white px-3 py-1 rounded-full border border-slate-200">
+              * Ejemplos demostrativos elaborados para fines del proyecto académico.
+            </span>
+          </div>
+        </div>
+
+        <!-- Rejilla de 2 Testimonios -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          
+          <!-- Testimonio 1 -->
+          <blockquote class="bg-white rounded-2xl p-6 sm:p-8 border border-brand-border shadow-xs flex flex-col justify-between space-y-6">
+            <div class="space-y-4">
+              <div class="flex items-center gap-1 text-amber-500 text-sm" aria-label="Calificación ilustrativa de 5 estrellas">
+                ★★★★★
+              </div>
+              <p class="text-sm sm:text-base text-slate-700 leading-relaxed italic">
+                “Tenía dudas sobre cómo mostrar mis productos en internet sin complicarme con aspectos técnicos. Con WebImpulse logré tener un catálogo digital claro donde mis clientas pueden ver las piezas y consultar directamente.”
+              </p>
+            </div>
+            <footer class="pt-4 border-t border-slate-100 flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-blue-100 text-brand-pulse font-bold flex items-center justify-center text-sm font-heading" aria-hidden="true">
+                AG
+              </div>
+              <div>
+                <cite class="not-italic font-bold text-sm text-brand-slate block">Andrea Gómez</cite>
+                <span class="text-xs text-slate-500 block">Taller Textil & Tejidos Artesanales</span>
+              </div>
+            </footer>
+          </blockquote>
+
+          <!-- Testimonio 2 -->
+          <blockquote class="bg-white rounded-2xl p-6 sm:p-8 border border-brand-border shadow-xs flex flex-col justify-between space-y-6">
+            <div class="space-y-4">
+              <div class="flex items-center gap-1 text-amber-500 text-sm" aria-label="Calificación ilustrativa de 5 estrellas">
+                ★★★★★
+              </div>
+              <p class="text-sm sm:text-base text-slate-700 leading-relaxed italic">
+                “Antes compartía listas de precios por mensaje en redes sociales y tomaba mucho tiempo responder cada detalle. La página web me permitió presentar las variedades de café de forma ordenada y dar una imagen más formal a mi marca.”
+              </p>
+            </div>
+            <footer class="pt-4 border-t border-slate-100 flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-emerald-100 text-brand-sage font-bold flex items-center justify-center text-sm font-heading" aria-hidden="true">
+                CM
+              </div>
+              <div>
+                <cite class="not-italic font-bold text-sm text-brand-slate block">Carlos Mendoza</cite>
+                <span class="text-xs text-slate-500 block">Tostaduría & Café de Origen</span>
+              </div>
+            </footer>
+          </blockquote>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- 5. SECCIÓN "¿CÓMO FUNCIONA?" (ID="COMO-FUNCIONA")         -->
+    <!-- ======================================================== -->
+    <section id="como-funciona" class="py-16 md:py-24 border-b border-brand-border bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        
+        <!-- Encabezado de Sección -->
+        <div class="text-center max-w-2xl mx-auto space-y-3">
+          <div class="text-xs font-semibold text-brand-pulse uppercase tracking-wider">
+            Proceso de Trabajo
+          </div>
+          <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold font-heading text-brand-slate tracking-tight">
+            ¿Cómo funciona WebImpulse?
+          </h2>
+          <p class="text-sm sm:text-base text-slate-600">
+            Un método de trabajo organizado en 4 pasos para desarrollar tu página web con claridad de principio a fin.
+          </p>
+        </div>
+
+        <!-- Cuadrícula de 4 Pasos -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          
+          <!-- Paso 1 -->
+          <div class="bg-brand-canvas rounded-2xl p-6 border border-brand-border space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <span class="text-3xl font-extrabold font-heading text-brand-pulse block">01</span>
+              <h3 class="text-lg font-bold font-heading text-brand-slate">Cuéntanos tu idea</h3>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Conversamos sobre tu emprendimiento, los productos artesanales que ofreces y la imagen que deseas proyectar.
+              </p>
+            </div>
+            <div class="pt-3 border-t border-slate-200 text-[11px] font-mono text-slate-500">
+              Etapa 1 · Diagnóstico inicial
+            </div>
+          </div>
+
+          <!-- Paso 2 -->
+          <div class="bg-brand-canvas rounded-2xl p-6 border border-brand-border space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <span class="text-3xl font-extrabold font-heading text-brand-pulse block">02</span>
+              <h3 class="text-lg font-bold font-heading text-brand-slate">Diseñamos tu página</h3>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Estructuramos el diseño visual, organizamos las secciones de tu catálogo y preparamos los elementos adaptados a celulares.
+              </p>
+            </div>
+            <div class="pt-3 border-t border-slate-200 text-[11px] font-mono text-slate-500">
+              Etapa 2 · Desarrollo visual
+            </div>
+          </div>
+
+          <!-- Paso 3 -->
+          <div class="bg-brand-canvas rounded-2xl p-6 border border-brand-border space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <span class="text-3xl font-extrabold font-heading text-brand-pulse block">03</span>
+              <h3 class="text-lg font-bold font-heading text-brand-slate">Revisamos contigo</h3>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Te presentamos una vista previa para revisar juntos la navegación, los textos y las imágenes antes del lanzamiento.
+              </p>
+            </div>
+            <div class="pt-3 border-t border-slate-200 text-[11px] font-mono text-slate-500">
+              Etapa 3 · Revisión y ajustes
+            </div>
+          </div>
+
+          <!-- Paso 4 -->
+          <div class="bg-brand-canvas rounded-2xl p-6 border border-brand-border space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <span class="text-3xl font-extrabold font-heading text-brand-sage block">04</span>
+              <h3 class="text-lg font-bold font-heading text-brand-slate">Publicamos tu web</h3>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Conectamos tu dominio, publicamos tu página en internet y te orientamos sobre cómo compartirla con tu comunidad.
+              </p>
+            </div>
+            <div class="pt-3 border-t border-slate-200 text-[11px] font-mono text-brand-sage font-medium">
+              Etapa 4 · Puesta en línea
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Enlace al Formulario -->
+        <div class="text-center pt-4">
+          <a href="#cotizar" class="inline-flex items-center gap-2 text-sm font-semibold text-brand-pulse hover:text-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-pulse rounded-md">
+            <span>¿Quieres iniciar el paso 1? Solicita tu cotización</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- 6. FORMULARIO DE CAPTURA (ID="COTIZAR")                   -->
+    <!-- ======================================================== -->
+    <section id="cotizar" class="py-16 md:py-24 border-b border-brand-border bg-brand-canvas">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        
+        <!-- Encabezado del Formulario -->
+        <div class="text-center space-y-3">
+          <div class="text-xs font-semibold text-brand-pulse uppercase tracking-wider">
+            Comienza tu Proyecto
+          </div>
+          <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold font-heading text-brand-slate tracking-tight">
+            Solicita tu diagnóstico y cotización
+          </h2>
+          <p class="text-sm sm:text-base text-slate-600 max-w-xl mx-auto">
+            Cuéntanos sobre tu emprendimiento y te responderemos con una propuesta orientada a las necesidades de tu negocio.
+          </p>
+        </div>
+
+        <!-- Formulario Accesible y Semántico -->
+        <div class="bg-white rounded-2xl border border-brand-border p-6 sm:p-10 shadow-sm">
+          <form id="formulario-cotizar" novalidate class="space-y-6">
+            
+            <!-- Campo 1: Nombre Completo -->
+            <div class="space-y-1.5">
+              <label for="nombre-completo" class="block text-xs sm:text-sm font-bold text-brand-slate">
+                Nombre completo <span class="text-rose-600" aria-hidden="true">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="nombre-completo" 
+                name="nombre_completo" 
+                required
+                aria-required="true"
+                aria-describedby="nombre-error"
+                placeholder="Ej. Laura Martínez" 
+                class="w-full px-4 py-3 rounded-lg border border-slate-200 text-sm text-brand-slate placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-pulse focus:border-transparent transition-all"
+              >
+              <!-- Contenedor reservado para mensaje de error vía JS -->
+              <span id="nombre-error" class="hidden text-xs text-rose-600 font-medium mt-1" aria-live="polite">
+                Por favor, ingresa tu nombre completo.
+              </span>
+            </div>
+
+            <!-- Campo 2: Correo Electrónico -->
+            <div class="space-y-1.5">
+              <label for="correo-electronico" class="block text-xs sm:text-sm font-bold text-brand-slate">
+                Correo electrónico <span class="text-rose-600" aria-hidden="true">*</span>
+              </label>
+              <input 
+                type="email" 
+                id="correo-electronico" 
+                name="correo_electronico" 
+                required
+                aria-required="true"
+                aria-describedby="correo-error"
+                placeholder="laura@minegocio.com" 
+                class="w-full px-4 py-3 rounded-lg border border-slate-200 text-sm text-brand-slate placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-pulse focus:border-transparent transition-all"
+              >
+              <!-- Contenedor reservado para mensaje de error vía JS -->
+              <span id="correo-error" class="hidden text-xs text-rose-600 font-medium mt-1" aria-live="polite">
+                Por favor, ingresa un correo electrónico válido.
+              </span>
+            </div>
+
+            <!-- Campo 3: Tipo de Negocio (Select) -->
+            <div class="space-y-1.5">
+              <label for="tipo-negocio" class="block text-xs sm:text-sm font-bold text-brand-slate">
+                Tipo de negocio o emprendimiento <span class="text-rose-600" aria-hidden="true">*</span>
+              </label>
+              <select 
+                id="tipo-negocio" 
+                name="tipo_negocio" 
+                required
+                aria-required="true"
+                aria-describedby="negocio-error"
+                class="w-full px-4 py-3 rounded-lg border border-slate-200 text-sm text-brand-slate bg-white focus:outline-none focus:ring-2 focus:ring-brand-pulse focus:border-transparent transition-all"
+              >
+                <option value="" disabled selected>Selecciona tu tipo de negocio...</option>
+                <option value="artesanias">Artesanías y productos hechos a mano</option>
+                <option value="moda">Moda, ropa y joyería de diseño</option>
+                <option value="gastronomia">Alimentos, repostería y bebidas artesanales</option>
+                <option value="servicios">Servicios profesionales y consultorías</option>
+                <option value="bienestar">Salud, belleza y cuidado personal</option>
+                <option value="otro">Otro tipo de negocio local</option>
+              </select>
+              <!-- Contenedor reservado para mensaje de error vía JS -->
+              <span id="negocio-error" class="hidden text-xs text-rose-600 font-medium mt-1" aria-live="polite">
+                Por favor, selecciona una categoría para tu negocio.
+              </span>
+            </div>
+
+            <!-- Campo 4: Checkbox de Consentimiento Obligatorio -->
+            <div class="pt-2">
+              <div class="flex items-start gap-3">
+                <input 
+                  type="checkbox" 
+                  id="consentimiento-datos" 
+                  name="consentimiento_datos" 
+                  required
+                  aria-required="true"
+                  aria-describedby="consentimiento-error"
+                  class="mt-1 w-4 h-4 rounded border-slate-300 text-brand-pulse focus:ring-brand-pulse"
+                >
+                <label for="consentimiento-datos" class="text-xs text-slate-600 leading-relaxed cursor-pointer">
+                  Acepto el tratamiento de mis datos de contacto para recibir una propuesta personalizada de WebImpulse. <span class="text-rose-600" aria-hidden="true">*</span>
+                </label>
+              </div>
+              <!-- Contenedor reservado para mensaje de error vía JS -->
+              <span id="consentimiento-error" class="hidden text-xs text-rose-600 font-medium mt-1 block" aria-live="polite">
+                Debes autorizar el contacto para enviarte la propuesta.
+              </span>
+            </div>
+
+            <!-- Botón de Envío -->
+            <div class="pt-4">
+              <button 
+                type="submit" 
+                id="boton-enviar"
+                class="w-full py-3.5 px-6 rounded-lg text-sm sm:text-base font-semibold text-white bg-brand-pulse hover:bg-blue-700 shadow-sm hover:shadow transition-all focus:outline-none focus:ring-2 focus:ring-brand-pulse/30 cursor-pointer"
+              >
+                Solicitar diagnóstico y cotización
+              </button>
+              
+              <!-- Mensaje de estado global preparado para JS (sin alert) -->
+              <div id="formulario-estado" class="hidden mt-3 p-3 rounded-lg text-xs text-center font-medium" aria-live="polite"></div>
+            </div>
+
+            <!-- Nota de Privacidad -->
+            <div class="text-center pt-2">
+              <p class="text-[11px] text-slate-400">
+                🔒 Tus datos se tratan con estricta confidencialidad para fines de contacto directo.
+              </p>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================================================== -->
+  <!-- 7. FOOTER MINIMALISTA (FUERA DE <MAIN>)                  -->
+  <!-- ======================================================== -->
+  <footer class="bg-white border-t border-brand-border py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+        
+        <!-- Nombre y Descripción Breve -->
+        <div class="space-y-1">
+          <a href="#" class="font-heading font-extrabold text-lg text-brand-slate tracking-tight flex items-center justify-center md:justify-start gap-1.5 focus:outline-none focus:ring-2 focus:ring-brand-pulse rounded-md" aria-label="WebImpulse Inicio">
+            <span class="w-2 h-2 rounded-full bg-brand-pulse" aria-hidden="true"></span>
+            <span>Web<span class="text-brand-pulse">Impulse</span></span>
+          </a>
+          <p class="text-xs text-slate-500 max-w-sm">
+            Desarrollo web profesional, cercano y sin complicaciones técnicas para pequeños negocios y artesanos.
+          </p>
+        </div>
+
+        <!-- Enlaces Básicos alineados a las secciones -->
+        <nav class="flex flex-wrap items-center justify-center gap-6 text-xs text-slate-600" aria-label="Navegación al pie de página">
+          <a href="#beneficios" class="hover:text-brand-slate transition-colors focus:outline-none focus:ring-2 focus:ring-brand-pulse rounded-md">Beneficios</a>
+          <a href="#testimonios" class="hover:text-brand-slate transition-colors focus:outline-none focus:ring-2 focus:ring-brand-pulse rounded-md">Testimonios</a>
+          <a href="#como-funciona" class="hover:text-brand-slate transition-colors focus:outline-none focus:ring-2 focus:ring-brand-pulse rounded-md">¿Cómo funciona?</a>
+          <a href="#cotizar" class="hover:text-brand-pulse font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-brand-pulse rounded-md">Cotizar</a>
+        </nav>
+
+        <!-- Año Actual y Derechos Reservados -->
+        <div class="text-xs text-slate-400">
+          <p>© 2026 WebImpulse. Todos los derechos reservados.</p>
+          <p class="text-[11px] text-slate-400/80 mt-0.5">Proyecto académico de desarrollo web.</p>
+        </div>
+
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>`;
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(htmlBoilerplate);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
+      <div className="bg-white w-full max-w-3xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[85vh]">
+        {/* Header */}
+        <div className="bg-slate-900 text-white p-5 flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-2.5">
+            <Code className="w-5 h-5 text-blue-400" />
+            <div>
+              <h3 className="font-bold text-base font-heading">Snippet Inicial HTML5 + Tailwind CSS</h3>
+              <p className="text-xs text-slate-400">Tokens cromáticos, tipografía y estructura Hero listos para usar</p>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Code container */}
+        <div className="p-4 bg-slate-950 overflow-y-auto flex-1 font-mono text-xs text-slate-300 leading-relaxed selection:bg-blue-600 selection:text-white">
+          <pre>{htmlBoilerplate}</pre>
+        </div>
+
+        {/* Footer actions */}
+        <div className="p-4 bg-slate-100 border-t border-slate-200 flex items-center justify-between shrink-0">
+          <span className="text-xs text-slate-500">
+            Incluye configuración de fuentes Google Fonts y colores 60-30-10.
+          </span>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={onClose}
+              className="px-4 py-2 text-xs font-medium text-slate-600 hover:text-slate-900"
+            >
+              Cerrar
+            </button>
+            <button
+              onClick={handleCopy}
+              className="inline-flex items-center gap-2 px-5 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition-colors"
+            >
+              {copied ? (
+                <>
+                  <Check className="w-4 h-4 text-emerald-300" />
+                  <span>¡Código Copiado!</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-4 h-4" />
+                  <span>Copiar Código HTML</span>
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
