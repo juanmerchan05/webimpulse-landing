@@ -4,9 +4,7 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
+      - feature/estructura-unidad-3
   workflow_dispatch:
 
 permissions:
@@ -31,8 +29,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: studio/package.json
       - name: Install Studio dependencies
         run: npm install --prefix studio --legacy-peer-deps
       - name: Build Studio
@@ -50,5 +46,5 @@ jobs:
           path: ./public
       - name: Deploy to GitHub Pages
         id: deployment
-        if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+        if: github.ref == 'refs/heads/main'
         uses: actions/deploy-pages@v4
