@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - feature/estructura-unidad-3
   workflow_dispatch:
 
 permissions:
