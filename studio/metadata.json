@@ -1,0 +1,6 @@
+{
+  "name": "WebImpulse - Creative Brief & Design System Studio",
+  "description": "Brief creativo y sistema de diseño profesional para WebImpulse, servicio de desarrollo web para emprendedores como Laura Martínez.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
