@@ -271,16 +271,31 @@ document.addEventListener('DOMContentLoaded', () => {
     if (estadoFormulario) {
       const nombreUsuario = campoNombre ? campoNombre.value.trim() : 'Emprendedor/a';
 
-      estadoFormulario.innerHTML = `
-        <div class="flex items-center justify-center gap-2 font-semibold text-emerald-800">
-          <span class="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs" aria-hidden="true">✓</span>
-          <span>¡Solicitud enviada con éxito!</span>
-        </div>
-        <p class="text-emerald-700 text-xs mt-1.5 leading-relaxed">
-          Gracias, <strong>${nombreUsuario}</strong>. Hemos recibido tu información correctamente. Te responderemos en un plazo máximo de 24 a 48 horas hábiles con la propuesta para tu negocio.
-        </p>
-      `;
+      // Construir el mensaje con nodos DOM y textContent para evitar inyección HTML.
+      const encabezadoEstado = document.createElement('div');
+      encabezadoEstado.className = 'flex items-center justify-center gap-2 font-semibold text-emerald-800';
 
+      const iconoEstado = document.createElement('span');
+      iconoEstado.className = 'w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs';
+      iconoEstado.setAttribute('aria-hidden', 'true');
+      iconoEstado.textContent = '✓';
+
+      const tituloEstado = document.createElement('span');
+      tituloEstado.textContent = 'Formulario validado';
+      encabezadoEstado.append(iconoEstado, tituloEstado);
+
+      const detalleEstado = document.createElement('p');
+      detalleEstado.className = 'text-emerald-700 text-xs mt-1.5 leading-relaxed';
+      detalleEstado.append(document.createTextNode('Gracias, '));
+
+      const nombreSeguro = document.createElement('strong');
+      nombreSeguro.textContent = nombreUsuario;
+      detalleEstado.append(
+        nombreSeguro,
+        document.createTextNode('. Tus datos superaron la validación del formulario. El envío a nuestro equipo se habilitará cuando conectemos el servicio de recepción.')
+      );
+
+      estadoFormulario.replaceChildren(encabezadoEstado, detalleEstado);
       estadoFormulario.className =
         'mt-4 p-4 rounded-xl text-center bg-emerald-50 border border-emerald-200 shadow-xs block';
       estadoFormulario.style.display = 'block';
@@ -294,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (botonEnviar) {
       const textoOriginal = botonEnviar.innerHTML;
       botonEnviar.disabled = true;
-      botonEnviar.textContent = '✓ Solicitud Registrada';
+      botonEnviar.textContent = '✓ Datos validados';
       botonEnviar.classList.add('opacity-75', 'cursor-not-allowed');
 
       setTimeout(() => {

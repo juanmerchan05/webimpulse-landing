@@ -16,7 +16,8 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  # Evita que validaciones de ramas o PR cancelen el despliegue de main.
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
