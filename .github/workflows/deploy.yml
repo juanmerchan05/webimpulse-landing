@@ -37,7 +37,7 @@ jobs:
       - name: Prepare landing and assets
         run: |
           mkdir -p public/assets/images
-          cp index.html styles.css script.js public/
+          cp index.html styles.css components.css script.js public/
           cp -R assets/images/. public/assets/images/
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
