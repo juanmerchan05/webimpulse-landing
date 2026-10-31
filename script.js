@@ -79,6 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
     formulario.hidden = true;
     if (avisoCompletado) {
       avisoCompletado.hidden = false;
+      avisoCompletado.classList.remove('hidden');
       avisoCompletado.textContent = 'Ya recibimos una solicitud desde este navegador. ¡Gracias por confiar en WebImpulse! Si necesitas realizar otra consulta, puedes contactarnos por nuestros canales de atención.';
     }
   }
