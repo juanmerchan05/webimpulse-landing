@@ -320,7 +320,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Limpiar campos del formulario tras el éxito
-    formulario.reset();
 
     // Restablecer atributos de accesibilidad
     [campoNombre, campoCorreo, campoNegocio, campoMensaje, campoConsentimiento].forEach((campo) => {
