@@ -218,116 +218,62 @@ document.addEventListener('DOMContentLoaded', () => {
     campoConsentimiento.addEventListener('change', validarConsentimiento);
   }
 
-  // =========================================================================
-  // EVENTO 'SUBMIT': Validación global antes del envío
-  // =========================================================================
-  formulario.addEventListener('submit', (evento) => {
-    // Impedir envío automático / recarga de página
+  // Enviar el formulario a Formspree después de validar los campos.
+  formulario.addEventListener('submit', async (evento) => {
     evento.preventDefault();
 
-    // Validar exhaustivamente todos los campos
-    const esNombreValido = validarNombre();
-    const esCorreoValido = validarCorreo();
-    const esNegocioValido = validarTipoNegocio();
-    const esMensajeValido = validarMensaje();
-    const esConsentimientoValido = validarConsentimiento();
+    const valido = validarNombre() && validarCorreo() &&
+      validarTipoNegocio() && validarMensaje() && validarConsentimiento();
 
-    // 3. COMPROBACIÓN ESTRICTA: Si CUALQUIER campo falla, abortar completamente el envío
-    const formularioEsValido =
-      esNombreValido &&
-      esCorreoValido &&
-      esNegocioValido &&
-      esMensajeValido &&
-      esConsentimientoValido;
-
-    if (!formularioEsValido) {
-      // Ocultar y vaciar inmediatamente el contenedor de éxito si existiese de un intento previo
+    if (!valido) {
       if (estadoFormulario) {
         estadoFormulario.classList.add('hidden');
-        estadoFormulario.style.display = 'none';
-        estadoFormulario.innerHTML = '';
+        estadoFormulario.replaceChildren();
       }
-
-      // Enfocar inmediatamente el primer campo que tenga error para accesibilidad
-      if (!esNombreValido && campoNombre) {
-        campoNombre.focus();
-      } else if (!esCorreoValido && campoCorreo) {
-        campoCorreo.focus();
-      } else if (!esNegocioValido && campoNegocio) {
-        campoNegocio.focus();
-      } else if (!esMensajeValido && campoMensaje) {
-        campoMensaje.focus();
-      } else if (!esConsentimientoValido && campoConsentimiento) {
-        campoConsentimiento.focus();
-      }
-
-      // DETENER LA EJECUCIÓN AQUÍ: Bloquea el envío y NUNCA llega al mensaje de éxito
+      const primerCampoInvalido = [campoNombre, campoCorreo, campoNegocio, campoMensaje, campoConsentimiento]
+        .find((campo) => campo && campo.getAttribute('aria-invalid') === 'true');
+      if (primerCampoInvalido) primerCampoInvalido.focus();
       return;
     }
 
-    // =======================================================================
-    // CASO EXITOSO: Mostrar mensaje de éxito en la página (sin alert)
-    // =======================================================================
-    if (estadoFormulario) {
-      const nombreUsuario = campoNombre ? campoNombre.value.trim() : 'Emprendedor/a';
-
-      // Construir el mensaje con nodos DOM y textContent para evitar inyección HTML.
-      const encabezadoEstado = document.createElement('div');
-      encabezadoEstado.className = 'flex items-center justify-center gap-2 font-semibold text-emerald-800';
-
-      const iconoEstado = document.createElement('span');
-      iconoEstado.className = 'w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs';
-      iconoEstado.setAttribute('aria-hidden', 'true');
-      iconoEstado.textContent = '✓';
-
-      const tituloEstado = document.createElement('span');
-      tituloEstado.textContent = 'Formulario validado';
-      encabezadoEstado.append(iconoEstado, tituloEstado);
-
-      const detalleEstado = document.createElement('p');
-      detalleEstado.className = 'text-emerald-700 text-xs mt-1.5 leading-relaxed';
-      detalleEstado.append(document.createTextNode('Gracias, '));
-
-      const nombreSeguro = document.createElement('strong');
-      nombreSeguro.textContent = nombreUsuario;
-      detalleEstado.append(
-        nombreSeguro,
-        document.createTextNode('. Tus datos superaron la validación del formulario. El envío a nuestro equipo se habilitará cuando conectemos el servicio de recepción.')
-      );
-
-      estadoFormulario.replaceChildren(encabezadoEstado, detalleEstado);
-      estadoFormulario.className =
-        'mt-4 p-4 rounded-xl text-center bg-emerald-50 border border-emerald-200 shadow-xs block';
-      estadoFormulario.style.display = 'block';
-      estadoFormulario.setAttribute('role', 'status');
-
-      // Desplazamiento suave para asegurar visibilidad del feedback
-      estadoFormulario.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-
-    // Feedback temporal en el botón de envío
     if (botonEnviar) {
-      const textoOriginal = botonEnviar.innerHTML;
       botonEnviar.disabled = true;
-      botonEnviar.textContent = '✓ Datos validados';
-      botonEnviar.classList.add('opacity-75', 'cursor-not-allowed');
-
-      setTimeout(() => {
-        botonEnviar.disabled = false;
-        botonEnviar.innerHTML = textoOriginal;
-        botonEnviar.classList.remove('opacity-75', 'cursor-not-allowed');
-      }, 5000);
+      botonEnviar.textContent = 'Enviando solicitud…';
+    }
+    if (estadoFormulario) {
+      estadoFormulario.className = 'mt-4 p-4 rounded-xl text-center bg-blue-50 border border-blue-200 block';
+      estadoFormulario.textContent = 'Estamos enviando tu solicitud…';
+      estadoFormulario.setAttribute('role', 'status');
     }
 
-    // Limpiar campos del formulario tras el éxito
+    try {
+      const datos = new FormData(formulario);
+      datos.append('_subject', 'Nueva solicitud de cotización - WebImpulse');
+      const respuesta = await fetch(formulario.action, {
+        method: 'POST',
+        body: datos,
+        headers: { Accept: 'application/json' }
+      });
+      if (!respuesta.ok) throw new Error('No se pudo enviar la solicitud. Inténtalo de nuevo.');
 
-    // Restablecer atributos de accesibilidad
-    [campoNombre, campoCorreo, campoNegocio, campoMensaje, campoConsentimiento].forEach((campo) => {
-      if (campo) {
-        campo.setAttribute('aria-invalid', 'false');
-        campo.removeAttribute('aria-describedby');
+      if (estadoFormulario) {
+        estadoFormulario.className = 'mt-4 p-4 rounded-xl text-center bg-emerald-50 border border-emerald-200 block';
+        estadoFormulario.textContent = '✓ Solicitud enviada correctamente. Gracias, ' +
+          (campoNombre ? campoNombre.value.trim() : '') + '. Nos pondremos en contacto contigo.';
+        estadoFormulario.setAttribute('role', 'status');
       }
-    });
+    } catch (error) {
+      if (estadoFormulario) {
+        estadoFormulario.className = 'mt-4 p-4 rounded-xl text-center bg-rose-50 border border-rose-200 block';
+        estadoFormulario.textContent = error.message || 'Ocurrió un error al enviar. Inténtalo nuevamente.';
+        estadoFormulario.setAttribute('role', 'alert');
+      }
+    } finally {
+      if (botonEnviar) {
+        botonEnviar.disabled = false;
+        botonEnviar.textContent = 'Solicitar diagnóstico y cotización';
+      }
+    }
   });
 
   // =========================================================================
