@@ -37,6 +37,69 @@ document.addEventListener('DOMContentLoaded', () => {
   const estadoFormulario = document.getElementById('formulario-estado');
   const botonEnviar = document.getElementById('boton-enviar');
 
+  // Persistencia local del formulario (solo en este navegador y dispositivo).
+  const CLAVE_BORRADOR = 'webimpulse:cotizacion:borrador:v1';
+  const CLAVE_COMPLETADO = 'webimpulse:cotizacion:completado:v1';
+  const avisoCompletado = document.getElementById('formulario-completado');
+  const camposPersistentes = Array.from(
+    formulario.querySelectorAll('input[name], select[name], textarea[name]')
+  ).filter((campo) => campo.type !== 'submit' && campo.type !== 'button');
+
+  function guardarBorrador() {
+    try {
+      const borrador = {};
+      camposPersistentes.forEach((campo) => {
+        borrador[campo.name] = campo.type === 'checkbox' ? campo.checked : campo.value;
+      });
+      localStorage.setItem(CLAVE_BORRADOR, JSON.stringify(borrador));
+    } catch (error) {
+      console.warn('WebImpulse: no fue posible guardar el borrador local.', error);
+    }
+  }
+
+  function restaurarBorrador() {
+    try {
+      const borradorGuardado = localStorage.getItem(CLAVE_BORRADOR);
+      if (!borradorGuardado) return;
+      const borrador = JSON.parse(borradorGuardado);
+      camposPersistentes.forEach((campo) => {
+        if (!Object.prototype.hasOwnProperty.call(borrador, campo.name)) return;
+        if (campo.type === 'checkbox') {
+          campo.checked = Boolean(borrador[campo.name]);
+        } else if (typeof borrador[campo.name] === 'string') {
+          campo.value = borrador[campo.name];
+        }
+      });
+    } catch (error) {
+      console.warn('WebImpulse: no fue posible restaurar el borrador local.', error);
+    }
+  }
+
+  function mostrarFormularioCompletado() {
+    formulario.hidden = true;
+    if (avisoCompletado) {
+      avisoCompletado.hidden = false;
+      avisoCompletado.classList.remove('hidden');
+      avisoCompletado.textContent = 'Ya recibimos una solicitud desde este navegador. ¡Gracias por confiar en WebImpulse! Si necesitas realizar otra consulta, puedes contactarnos por nuestros canales de atención.';
+    }
+  }
+
+  // Si ya se completó una solicitud en este navegador, mostrar el aviso.
+  try {
+    if (localStorage.getItem(CLAVE_COMPLETADO) === 'true') {
+      mostrarFormularioCompletado();
+    } else {
+      restaurarBorrador();
+    }
+  } catch (error) {
+    console.warn('WebImpulse: no fue posible consultar el estado local.', error);
+  }
+
+  camposPersistentes.forEach((campo) => {
+    campo.addEventListener('input', guardarBorrador);
+    campo.addEventListener('change', guardarBorrador);
+  });
+
   // Expresión regular estándar y robusta para correo electrónico (RFC 5322 compatible, case-insensitive)
   const regexCorreo = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i;
 
@@ -262,6 +325,16 @@ document.addEventListener('DOMContentLoaded', () => {
           (campoNombre ? campoNombre.value.trim() : '') + '. Nos pondremos en contacto contigo.';
         estadoFormulario.setAttribute('role', 'status');
       }
+
+      // Solo después de la confirmación de Formspree se elimina el borrador
+      // y se registra que este navegador ya completó el formulario.
+      try {
+        localStorage.removeItem(CLAVE_BORRADOR);
+        localStorage.setItem(CLAVE_COMPLETADO, 'true');
+      } catch (error) {
+        console.warn('WebImpulse: no fue posible actualizar el estado local.', error);
+      }
+      mostrarFormularioCompletado();
     } catch (error) {
       if (estadoFormulario) {
         estadoFormulario.className = 'mt-4 p-4 rounded-xl text-center bg-rose-50 border border-rose-200 block';
