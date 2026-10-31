@@ -34,6 +34,8 @@ jobs:
         run: npm install --prefix studio --legacy-peer-deps
       - name: Build Studio
         run: npm run build --prefix studio -- --outDir ../public/studio
+      - name: Compile landing Tailwind CSS
+        run: npx --yes tailwindcss@3.4.17 -c tailwind.config.cjs -i ./tailwind.input.css -o ./public/tailwind.css --minify
       - name: Prepare landing and assets
         run: |
           mkdir -p public/assets/images
