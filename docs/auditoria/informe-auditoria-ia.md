@@ -188,3 +188,18 @@ try {
 - **Verificar:** se revisaron los fragmentos de código, la estructura del formulario, la petición a Formspree y las pruebas manuales descritas en este informe.
 - **Intervenir:** se incorporaron el envío real con `fetch` y `FormData`, la comprobación de `response.ok`, el uso de `textContent`, la conservación de datos ante errores y la persistencia local.
 - **Ajustar:** se corrigieron detalles de foco y de relaciones ARIA, y se documentaron los límites pendientes para evitar afirmar que la auditoría automatizada o la validación exhaustiva están completadas.
+
+
+## 12. Clasificación de problemas identificados
+
+| Problema identificado en la versión inicial | Tipo | Prioridad | Tratamiento en la versión actual |
+|---|---|---|---|
+| Confirmación de envío simulada sin servicio externo | Funcional | Alta | Reemplazada por petición real a Formspree y comprobación de respuesta. |
+| Inserción del nombre mediante `innerHTML` | Seguridad | Alta | El mensaje de confirmación utiliza `textContent`. |
+| Reinicio del formulario tras éxito aparente | Funcional / experiencia de usuario | Alta | El envío solo se considera exitoso tras respuesta satisfactoria. |
+| Reactivación del botón por temporizador fijo | Funcional | Media | El botón se controla durante la petición y se restaura en `finally`. |
+| Validación de correo descrita como RFC 5322 aunque es simplificada | Validación / precisión técnica | Media | Se documentó la limitación; la expresión regular sigue siendo simplificada. |
+| Relación ARIA eliminada al limpiar errores | Accesibilidad | Media | Se conserva `aria-describedby` definido inicialmente en HTML. |
+| Falta de pruebas automatizadas de accesibilidad y extremo a extremo | Calidad / pruebas | Media | Se declara como limitación; las verificaciones registradas son manuales. |
+
+La prioridad alta se asignó a problemas que podían producir una falsa confirmación o un riesgo de inyección. La prioridad media corresponde a limitaciones de validación, accesibilidad y cobertura de pruebas que no invalidan por sí solas el envío real, pero deben quedar documentadas.
