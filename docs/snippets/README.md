@@ -255,3 +255,16 @@ Se ejecutó Lighthouse sobre la landing publicada: https://juanmerchan05.github.
 | SEO | 100 |
 
 Las capturas de ambos resúmenes fueron aportadas como evidencia visual. En Mobile, Performance (70) queda como oportunidad de mejora; Desktop registra 96 en Performance. No se declara una optimización adicional ni se alteró la identidad visual para estas mediciones.
+
+
+## Verificación responsive y Lighthouse — Issue #7
+
+Se revisaron los breakpoints definidos en `styles.css`:
+
+- **Móvil:** `min-width: 320px`.
+- **Tablet:** `min-width: 768px`.
+- **Escritorio:** `min-width: 1280px`.
+
+La comprobación previa de desbordamiento horizontal a 390 px y 1366 px no detectó diferencia entre el ancho del documento y el viewport. En la revisión manual final, el usuario confirmó que el menú móvil se despliega y se cierra correctamente y que la visualización funciona como se espera. No fue necesario modificar estilos ni alterar la identidad visual.
+
+Se registran las mediciones Lighthouse de Mobile y Desktop en la sección anterior. Performance Mobile (70) cumple el umbral mínimo de 70 indicado en el Issue; Desktop obtuvo 96. Las capturas de ambos resúmenes se conservaron como evidencia en el registro de la actividad.
