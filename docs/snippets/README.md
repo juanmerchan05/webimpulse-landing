@@ -230,3 +230,17 @@ Los siguientes prompts son ejemplos documentales reproducibles que describen el 
 La hoja `components.css` contiene las cuatro familias de componentes y la utilidad documentada. La landing HTML utiliza las clases de componentes en su marcado. La comprobación de existencia y uso de clases se realizó mediante inspección de los archivos del repositorio.
 
 La medición Lighthouse no se registra como completada en esta sección: debe ejecutarse sobre la URL publicada y conservarse su informe/captura como evidencia independiente.
+
+
+## Resultado Lighthouse (Desktop)
+
+Se ejecutó Lighthouse sobre la landing publicada: https://juanmerchan05.github.io/webimpulse-landing/
+
+| Categoría | Puntuación |
+|---|---:|
+| Performance | 70 |
+| Accessibility | 95 |
+| Best Practices | 100 |
+| SEO | 100 |
+
+La captura del resumen de Lighthouse fue aportada como evidencia de la verificación. El resultado de Performance (70) queda registrado como oportunidad de mejora; no se declara una optimización adicional ni se alteró la identidad visual para esta medición.
