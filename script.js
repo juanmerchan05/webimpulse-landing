@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (campo) {
       campo.setAttribute('aria-invalid', 'false');
-      campo.removeAttribute('aria-describedby');
+      // Se conserva la relación con el mensaje definida inicialmente en el HTML.
       campo.classList.remove('border-rose-500', 'focus:ring-rose-400');
       campo.classList.add('border-slate-200', 'focus:ring-brand-pulse');
     }
