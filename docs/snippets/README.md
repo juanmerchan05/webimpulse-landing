@@ -232,9 +232,11 @@ La hoja `components.css` contiene las cuatro familias de componentes y la utilid
 La medición Lighthouse no se registra como completada en esta sección: debe ejecutarse sobre la URL publicada y conservarse su informe/captura como evidencia independiente.
 
 
-## Resultado Lighthouse (Desktop)
+## Resultados Lighthouse
 
 Se ejecutó Lighthouse sobre la landing publicada: https://juanmerchan05.github.io/webimpulse-landing/
+
+**Mobile**
 
 | Categoría | Puntuación |
 |---|---:|
@@ -243,4 +245,13 @@ Se ejecutó Lighthouse sobre la landing publicada: https://juanmerchan05.github.
 | Best Practices | 100 |
 | SEO | 100 |
 
-La captura del resumen de Lighthouse fue aportada como evidencia de la verificación. El resultado de Performance (70) queda registrado como oportunidad de mejora; no se declara una optimización adicional ni se alteró la identidad visual para esta medición.
+**Desktop**
+
+| Categoría | Puntuación |
+|---|---:|
+| Performance | 96 |
+| Accessibility | 95 |
+| Best Practices | 100 |
+| SEO | 100 |
+
+Las capturas de ambos resúmenes fueron aportadas como evidencia visual. En Mobile, Performance (70) queda como oportunidad de mejora; Desktop registra 96 en Performance. No se declara una optimización adicional ni se alteró la identidad visual para estas mediciones.
