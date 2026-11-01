@@ -36,4 +36,8 @@ npm run build
 ```
 
 ## Actividades Unidad 3
-La documentación de auditoría AVIA, persistencia, sistema de componentes, pruebas y evidencias se organizará en `docs/`. Las funcionalidades pendientes se desarrollarán y documentarán progresivamente.
+Durante la Unidad 3 se realizaron actividades de auditoría crítica del código generado con IA, implementación y verificación de persistencia mediante `localStorage`, integración del envío del formulario con Formspree y documentación de componentes reutilizables.
+
+También se verificó el funcionamiento de la landing publicada, se organizaron las tareas mediante Issues y un tablero de GitHub Projects, y se registraron evidencias del proceso.
+
+La documentación y los materiales de soporte se encuentran organizados en `docs/`.
