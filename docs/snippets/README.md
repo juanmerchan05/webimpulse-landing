@@ -132,3 +132,101 @@ También puede aplicarse a un botón de formulario:
 | Tarjeta de testimonio | `.c-card--testimonial` | `.c-card__quote` |
 | Tarjeta de paso | `.c-card--step` | `.c-card__number` |
 | Utilidad de alineación | `.u-text-center` | — |
+
+
+## Variables CSS documentadas
+
+Las variables se definen en `:root` dentro de `styles.css`. Esta tabla recoge más de diez tokens reales utilizados por el sistema; sus valores no se modifican en esta documentación.
+
+| Variable | Valor actual | Uso |
+|---|---|---|
+| `--color-canvas` | `#FAFAF9` | Fondo principal |
+| `--color-canvas-card` | `#FFFFFF` | Superficie de tarjetas |
+| `--color-slate-900` | `#0F172A` | Títulos y texto principal |
+| `--color-slate-700` | `#334155` | Texto destacado |
+| `--color-slate-600` | `#475569` | Texto de cuerpo |
+| `--color-slate-200` | `#E2E8F0` | Bordes y separadores |
+| `--color-pulse` | `#2563EB` | Acento principal |
+| `--color-pulse-hover` | `#1D4ED8` | Estado hover del acento |
+| `--color-sage` | `#047857` | Acento de éxito |
+| `--font-heading` | Plus Jakarta Sans | Tipografía de encabezados |
+| `--font-body` | DM Sans | Tipografía de cuerpo |
+| `--space-2` | `0.5rem` | Espaciado compacto |
+| `--space-6` | `1.5rem` | Espaciado de tarjetas |
+| `--radius-lg` | `0.75rem` | Radio de botones |
+| `--radius-2xl` | `1.25rem` | Radio de tarjetas |
+| `--shadow-card` | Sombra suave | Elevación de tarjetas |
+| `--transition-fast` | `150ms` + curva | Transiciones breves |
+| `--transition-smooth` | `200ms` + curva | Transiciones suaves |
+
+Los snippets de botones y tarjetas reutilizan al menos tres grupos de variables (espaciado, color, radio, tipografía, sombra y transición). Las variables se consumen directamente en `components.css`.
+
+## Registro de prompts CREDA y ciclo AVIA
+
+Los siguientes prompts son ejemplos documentales reproducibles que describen el propósito y las restricciones de cada componente. No se presentan como transcripciones literales de conversaciones históricas.
+
+### 1. Botón de acción
+
+**CREDA — prompt documentado**
+
+- **Contexto:** landing de WebImpulse con identidad visual ya definida en `styles.css`.
+- **Rol:** desarrollador frontend con enfoque en CSS reutilizable y accesibilidad.
+- **Especificación:** crear un botón base y una variante primaria con alineación consistente, altura mínima de 44 px y foco visible.
+- **Datos:** utilizar tokens existentes de color, tipografía, espaciado, radio, sombra y transición.
+- **Acción:** definir `.c-button` y `.c-button--primary` sin alterar la paleta ni introducir dependencias.
+  
+**AVIA:** Analizar la necesidad de una acción consistente; verificar los tokens existentes; intervenir creando las clases base y variante; ajustar el foco, el tamaño táctil y el movimiento reducido.
+
+### 2. Tarjeta de beneficio
+
+**CREDA — prompt documentado**
+
+- **Contexto:** sección de beneficios con varias ventajas que deben compartir presentación.
+- **Rol:** desarrollador frontend orientado a sistemas de diseño.
+- **Especificación:** crear una tarjeta reutilizable con elemento interno para el título y estado hover discreto.
+- **Datos:** reutilizar variables de superficie, borde, espaciado, radio, tipografía, sombra y transición.
+- **Acción:** definir `.c-card--benefit` y `.c-card__title`, sin modificar el contenido ni la identidad visual.
+
+**AVIA:** Analizar la repetición de tarjetas; verificar la escala visual y los tokens disponibles; intervenir encapsulando el estilo en clases reutilizables; ajustar el contraste, el hover y la reducción de movimiento.
+
+### 3. Tarjeta de testimonio
+
+**CREDA — prompt documentado**
+
+- **Contexto:** sección de testimonios que presenta citas y atribuciones.
+- **Rol:** desarrollador frontend con atención a semántica HTML.
+- **Especificación:** crear una tarjeta que permita presentar una cita mediante `blockquote` y un elemento interno para el texto.
+- **Datos:** emplear variables de superficie, borde, radio, espaciado, tipografía y sombra.
+- **Acción:** definir `.c-card--testimonial` y `.c-card__quote`; no inventar testimonios ni atribuciones.
+
+**AVIA:** Analizar la estructura semántica de las citas; verificar tokens y marcado; intervenir con estilos encapsulados; ajustar legibilidad, jerarquía y movimiento reducido.
+
+### 4. Tarjeta de paso
+
+**CREDA — prompt documentado**
+
+- **Contexto:** sección “Cómo funciona”, organizada en etapas consecutivas.
+- **Rol:** desarrollador frontend especializado en componentes de contenido.
+- **Especificación:** crear una tarjeta de proceso con número decorativo, título y descripción.
+- **Datos:** reutilizar tokens de color, fondo, borde, radio, espaciado, tipografía, sombra y transición.
+- **Acción:** definir `.c-card--step` y `.c-card__number`; conservar la semántica y permitir ocultar el número decorativo a lectores de pantalla.
+
+**AVIA:** Analizar la necesidad de representar etapas; verificar la jerarquía de contenido y tokens; intervenir con la clase reutilizable; ajustar consistencia, legibilidad y comportamiento sin movimiento.
+
+### 5. Utilidad de alineación
+
+**CREDA — prompt documentado**
+
+- **Contexto:** textos puntuales que requieren alineación centrada sin duplicar declaraciones CSS.
+- **Rol:** desarrollador frontend que mantiene una biblioteca pequeña de utilidades.
+- **Especificación:** crear una clase de utilidad de responsabilidad única.
+- **Datos:** respetar la convención `u-` y evitar nuevas reglas visuales innecesarias.
+- **Acción:** definir `.u-text-center` con una única propiedad de alineación.
+
+**AVIA:** Analizar el patrón repetido de alineación; verificar que no exista ya una utilidad equivalente; intervenir con una clase mínima; ajustar sus usos para aplicarla solo donde mejore la lectura.
+
+## Validación de integración
+
+La hoja `components.css` contiene las cuatro familias de componentes y la utilidad documentada. La landing HTML utiliza las clases de componentes en su marcado. La comprobación de existencia y uso de clases se realizó mediante inspección de los archivos del repositorio.
+
+La medición Lighthouse no se registra como completada en esta sección: debe ejecutarse sobre la URL publicada y conservarse su informe/captura como evidencia independiente.
