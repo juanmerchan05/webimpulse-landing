@@ -86,3 +86,105 @@ La experiencia demuestra que el código generado por IA debe tratarse como una p
 La auditoría permitió identificar diferencias importantes entre una demostración visual y una funcionalidad realmente operativa. La integración de Formspree, el uso de `textContent`, la conservación de datos ante errores y la persistencia local representan mejoras verificadas en la versión actual. También permanecen límites que deben comunicarse con claridad, especialmente en la validación del correo, el almacenamiento local, la accesibilidad y la ausencia de pruebas automatizadas.
 
 El principal aprendizaje es que la inteligencia artificial puede apoyar y acelerar el desarrollo, pero no sustituye la revisión crítica ni las pruebas funcionales realizadas por la persona responsable del proyecto.
+
+
+## 9. Comparación de fragmentos: antes y después
+
+Los siguientes ejemplos se tomaron del primer commit revisado y de la versión actual de `script.js`.
+
+### 9.1 Confirmación del envío
+
+**Antes — código inicial:** se construía una confirmación visual directamente en el navegador, sin verificar una respuesta de un servicio externo.
+
+```js
+if (estadoFormulario) {
+  estadoFormulario.innerHTML = `
+    <div>¡Solicitud enviada con éxito!</div>
+    <p>Gracias, <strong>${nombreUsuario}</strong>. Hemos recibido tu información.</p>
+  `;
+}
+formulario.reset();
+```
+
+**Después — versión actual:** se envían los datos a Formspree y solo se confirma el éxito si la respuesta HTTP es satisfactoria.
+
+```js
+const datos = new FormData(formulario);
+const respuesta = await fetch(formulario.action, {
+  method: 'POST',
+  body: datos,
+  headers: { Accept: 'application/json' }
+});
+if (!respuesta.ok) throw new Error('No se pudo enviar la solicitud.');
+```
+
+### 9.2 Inserción del nombre en el mensaje
+
+**Antes — código inicial:** el nombre ingresado se interpolaba dentro de `innerHTML`, interpretando el contenido como marcado HTML.
+
+```js
+estadoFormulario.innerHTML = `
+  <p>Gracias, <strong>${nombreUsuario}</strong>.</p>
+`;
+```
+
+**Después — versión actual:** el mensaje se inserta como texto plano mediante `textContent`.
+
+```js
+estadoFormulario.textContent = 'Solicitud enviada correctamente. Gracias, ' +
+  campoNombre.value.trim() + '. Nos pondremos en contacto contigo.';
+```
+
+### 9.3 Estado del botón durante el envío
+
+**Antes — código inicial:** el botón se deshabilitaba durante un tiempo fijo y luego se reactivaba, independientemente de una confirmación del servidor.
+
+```js
+botonEnviar.disabled = true;
+botonEnviar.textContent = '✓ Solicitud Registrada';
+setTimeout(() => {
+  botonEnviar.disabled = false;
+}, 5000);
+```
+
+**Después — versión actual:** el botón permanece deshabilitado mientras la petición está en curso y se restaura al finalizar, tanto si hay éxito como si ocurre un error.
+
+```js
+botonEnviar.disabled = true;
+botonEnviar.textContent = 'Enviando solicitud…';
+
+try {
+  // petición a Formspree y comprobación de respuesta
+} catch (error) {
+  // mostrar el error sin borrar los datos
+} finally {
+  botonEnviar.disabled = false;
+  botonEnviar.textContent = 'Solicitar diagnóstico y cotización';
+}
+```
+
+## 10. Checklist de auditoría de 12 puntos
+
+| N.º | Punto de revisión | Resultado | Observación |
+|---:|---|---|---|
+| 1 | Estructura semántica del documento | Cumple | Se verificaron encabezado, navegación, contenido principal, secciones y pie de página. |
+| 2 | Etiquetas asociadas a los campos | Cumple | Los controles del formulario tienen etiquetas vinculadas mediante `for` e `id`. |
+| 3 | Campos obligatorios y consentimiento | Cumple | Nombre, correo, tipo de negocio y consentimiento están marcados como requeridos. |
+| 4 | Validación de datos | Parcial | Hay validación propia; la expresión regular de correo es simplificada y no cubre todos los formatos posibles. |
+| 5 | Mensajes de error comprensibles | Cumple | Se muestran mensajes específicos junto a los campos. |
+| 6 | Comunicación accesible de errores | Parcial | Se utilizan atributos ARIA y regiones de anuncio; permanece el caso límite documentado cuando falta un contenedor de error. |
+| 7 | Foco y navegación por teclado | Cumple | Se verifica foco visible y se añadieron anillos de foco al menú móvil. |
+| 8 | Envío real de la información | Cumple | La landing envía una petición POST a Formspree y comprueba `response.ok`. |
+| 9 | Tratamiento de respuestas y errores | Cumple | El éxito depende de la respuesta del servicio y los datos se conservan si el envío falla. |
+| 10 | Seguridad al insertar contenido | Cumple | El nombre del usuario se presenta mediante `textContent`, no como HTML interpretado. |
+| 11 | Persistencia y privacidad | Parcial | El borrador se almacena en `localStorage`; no está cifrado y el alcance del estado completado es local al navegador. |
+| 12 | Pruebas y compatibilidad responsive | Parcial | Se realizaron comprobaciones manuales de envío, persistencia y anchos de 390 px y 1366 px; no hay suite automatizada de accesibilidad ni E2E. |
+
+**Balance:** 8 puntos cumplen y 4 son parciales. Los resultados parciales se mantienen visibles para no presentar como resueltos aspectos que aún tienen límites conocidos.
+
+## 11. Ciclo AVIA aplicado
+
+- **Analizar:** se comparó el primer commit con la versión actual y se identificaron riesgos de confirmación falsa, inserción insegura de contenido, gestión temporal del botón, validación y accesibilidad.
+- **Verificar:** se revisaron los fragmentos de código, la estructura del formulario, la petición a Formspree y las pruebas manuales descritas en este informe.
+- **Intervenir:** se incorporaron el envío real con `fetch` y `FormData`, la comprobación de `response.ok`, el uso de `textContent`, la conservación de datos ante errores y la persistencia local.
+- **Ajustar:** se corrigieron detalles de foco y de relaciones ARIA, y se documentaron los límites pendientes para evitar afirmar que la auditoría automatizada o la validación exhaustiva están completadas.
